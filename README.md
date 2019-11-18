@@ -9,6 +9,8 @@ Hi and welcome at the Crazyflie firmware app layer implementation of the Swarm G
 
 This repo will undergo several updates in the coming period, so please keep checking the status. Also if you have any questions, please use the issue list of this repository.
 
+**Please beware that this code is not the actual source code with which the Crazyflies in the publication has flown with. This is just an updated firmware to showcase the new applayer and peer2peer communication. If you want the old original firmware code that actually flew in the real-world experiments as in the paper, go to https://github.com/tudelft/SGBA_code_SR_2019**
+
 #### Build instructions
 
 Make sure your crazyflie has the newest NRF firmware with bluetooth disabled! (https://github.com/bitcraze/crazyflie2-nrf-firmware). Also give your crazyflies different address with an unique ID: E7E7E701, E7E7E702, etc. and make sure they are listining all on the same channel. Maximum is until 09 for now.

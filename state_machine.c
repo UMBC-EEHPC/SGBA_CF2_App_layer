@@ -198,12 +198,14 @@ void appMain(void *param)
   memcpy(&p_reply.data[1], &rssi_angle, sizeof(float));
   p_reply.size=5;
 
+#if METHOD!=1
   static uint64_t radioSendBroadcastTime=0;
+#endif
 
   static uint64_t takeoffdelaytime = 0;
 
   #if METHOD==3
-  static bool outbound = false;
+  static bool outbound = true;
   #endif
 
   systemWaitStart();
@@ -403,17 +405,17 @@ void appMain(void *param)
                   taken_off = true;
 
 
-#if METHOD==1
+#if METHOD==1 // wall following
           wall_follower_init(0.4, 0.5, 1);
 #endif
-#if METHOD==2
+#if METHOD==2 // wallfollowing with avoid
           if (my_id%2==1)
           init_wall_follower_and_avoid_controller(0.4, 0.5, -1);
           else
           init_wall_follower_and_avoid_controller(0.4, 0.5, 1);
 
 #endif
-#if METHOD==3
+#if METHOD==3 // Swarm Gradient Bug Algorithm
           if (my_id == 4 || my_id == 8) {
               init_SGBA_controller(0.4, 0.5, -0.8);
           } else if (my_id == 2 || my_id == 6) {
@@ -466,10 +468,13 @@ void appMain(void *param)
       }
     }
 
+#if METHOD != 1
     if (usecTimestamp() >= radioSendBroadcastTime + 1000*500) {
         radiolinkSendP2PPacketBroadcast(&p_reply);
         radioSendBroadcastTime = usecTimestamp();
     }
+
+#endif
     commanderSetSetpoint(&setpoint_BG, STATE_MACHINE_COMMANDER_PRI);
 
   }

@@ -46,7 +46,11 @@ float height;
 static bool taken_off = false;
 static float nominal_height = 0.3;
 
-//1= wall_following, //2=wall following with avoid, //3=SGBA
+// Switch to multiple methods, that increases in complexity 
+//1= wall_following: Go forward and follow walls with the multiranger 
+//2=wall following with avoid: This also follows walls but will move away if another crazyflie with an lower ID is coming close, 
+//3=SGBA: The SGBA method that incorperates the above methods.
+//        NOTE: the switching between outbound and inbound has not been implemented yet
 #define METHOD 1
 
 
@@ -197,8 +201,10 @@ void appMain(void *param)
   static uint64_t radioSendBroadcastTime=0;
 
   static uint64_t takeoffdelaytime = 0;
-  static bool outbound = false;
 
+  #if METHOD==3
+  static bool outbound = false;
+  #endif
 
   systemWaitStart();
   vTaskDelay(M2T(3000));
@@ -307,17 +313,25 @@ void appMain(void *param)
             }
         }*/
 
+    // Don't fly if multiranger/updownlaser is not connected or the uprange is activated
+
     if (flowdeck_isinit && multiranger_isinit ) {
       correctly_initialized = true;
     }
-    // Don't fly if multiranger/updownlaser is not connected or the uprange is activated
-    //TODO: add flowdeck init here
 
+
+#if METHOD == 3
     uint8_t rssi_beacon_threshold = 41;
        if (keep_flying == true && (!correctly_initialized || up_range < 0.2f || (!outbound
                                    && rssi_beacon_filtered < rssi_beacon_threshold))) {
          keep_flying = 0;
        }
+#else
+       if (keep_flying == true && (!correctly_initialized || up_range < 0.2f)) {
+         keep_flying = 0;
+       }
+#endif
+
     state = 0;
 
 

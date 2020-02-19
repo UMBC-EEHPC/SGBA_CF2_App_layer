@@ -47,7 +47,7 @@ static bool taken_off = false;
 static float nominal_height = 0.3;
 
 //1= wall_following, //2=wall following with avoid, //3=SGBA
-#define METHOD 3
+#define METHOD 1
 
 
 void p2pcallbackHandler(P2PPacket *p);
@@ -71,7 +71,9 @@ static float up_range;
 static float back_range;
 static float rssi_angle;
 static int state;
+#if METHOD == 3
 static int state_wf;
+#endif
 static float up_range_filtered;
 static int varid;
 //static bool manual_startup = false;

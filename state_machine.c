@@ -79,7 +79,8 @@ static int state;
 static int state_wf;
 #endif
 static float up_range_filtered;
-static int varid;
+static logVarId_t varid;
+static paramVarId_t paramid;
 //static bool manual_startup = false;
 static bool on_the_ground = true;
 //static uint32_t time_stamp_manual_startup_command = 0;
@@ -243,10 +244,10 @@ void appMain(void *param)
     rssi_inter_filtered =  (uint8_t)update_median_filter_f(&medFilt_2, (float)rssi_inter_closest);
 
     //checking init of multiranger and flowdeck
-    varid = paramGetVarId("deck", "bcMultiranger");
-    uint8_t multiranger_isinit=paramGetInt(varid);
-    varid = paramGetVarId("deck", "bcFlow2");
-    uint8_t flowdeck_isinit=paramGetUint(varid);
+    paramid = paramGetVarId("deck", "bcMultiranger");
+    uint8_t multiranger_isinit=paramGetInt(paramid);
+    paramid = paramGetVarId("deck", "bcFlow2");
+    uint8_t flowdeck_isinit=paramGetUint(paramid);
 
     // get current height and heading
     varid = logGetVarId("kalman", "stateZ");
@@ -398,7 +399,6 @@ void appMain(void *param)
          *  but the crazyflie  has not taken off
          *   then take off
          */
-          if (usecTimestamp() >= takeoffdelaytime + 1000*1000*my_id) {
 
               take_off(&setpoint_BG, nominal_height);
               if (height > nominal_height) {
@@ -434,10 +434,6 @@ void appMain(void *param)
 
               }
           on_the_ground = false;
-          }else{
-              shut_off_engines(&setpoint_BG);
-              taken_off = false;
-          }
 
       }
     } else {

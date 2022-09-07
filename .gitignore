@@ -1,5 +1,10 @@
 .cproject
 .project
+.config
 bin/*
+build/*
 cf2.*
 version.c
+.*.*
+*.o
+*.d

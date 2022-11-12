@@ -16,7 +16,9 @@ static float max_rate = 0.5;
 static float direction = 1;
 static float first_run = false;
 static int state = 1;
+static int prev_state = -1;
 float state_start_time;
+bool sees_person;
 
 
 
@@ -174,6 +176,13 @@ int wall_follower(float *vel_x, float *vel_y, float *vel_w, float front_range, f
   /***********************************************************
   * Handle state transitions
   ***********************************************************/
+  if (sees_person && prev_state == -1) {
+    prev_state = state;
+    state = transition(2);
+  } else if (!sees_person && prev_state != -1) {
+    state = transition(prev_state);
+    prev_state = -1;
+  }
 
   if (state == 1) {     //FORWARD
     if (front_range < ref_distance_from_wall + 0.2f) {

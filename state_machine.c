@@ -39,6 +39,7 @@
 #define STATE_MACHINE_COMMANDER_PRI 3
 
 static bool keep_flying = false;
+bool sees_person = false;
 
 
 float height;
@@ -506,6 +507,7 @@ void p2pcallbackHandler(P2PPacket *p)
 
 PARAM_GROUP_START(statemach)
 PARAM_ADD(PARAM_UINT8, keep_flying, &keep_flying)
+PARAM_ADD(PARAM_UINT8, sees_person, &sees_person)
 PARAM_ADD(PARAM_UINT8 | PARAM_RONLY, corinit, &correctly_initialized)
 PARAM_GROUP_STOP(statemach)
 

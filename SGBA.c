@@ -255,7 +255,7 @@ int SGBA_controller(float *vel_x, float *vel_y, float *vel_w, float *rssi_angle,
       pos_y_hit = current_pos_y;
       wanted_angle_hit = wanted_angle;
 
-      wall_follower_init(0.4, 0.5, 3);
+      wall_follower_init1(0.4);
 
       for (int it = 0; it < 8; it++) { correct_heading_array[it] = 0; }
 
@@ -267,7 +267,7 @@ int SGBA_controller(float *vel_x, float *vel_y, float *vel_w, float *rssi_angle,
     bool goal_check = logicIsCloseTo(wraptopi(current_heading - wanted_angle), 0, 0.1f);
     if (front_range < ref_distance_from_wall + 0.2f) {
       cannot_go_to_goal =  true;
-      wall_follower_init(0.4, 0.5, 3);
+      wall_follower_init(0.4, 3);
 
       state = transition(3); //wall_following
 

@@ -11,24 +11,26 @@
 
 // variables
 static float ref_distance_from_wall = 0;
-static float max_speed = 0.5;
 static float max_rate = 0.5;
 static float direction = 1;
 static float first_run = false;
-static int state = 1;
 static int prev_state = -1;
+int state = 1;
+float max_speed = 0.3;
 float state_start_time;
 bool sees_person;
 
-
-
-void wall_follower_init(float new_ref_distance_from_wall, float max_speed_ref, int init_state)
+void wall_follower_init1(float new_ref_distance_from_wall)
 {
   ref_distance_from_wall = new_ref_distance_from_wall;
-  max_speed = max_speed_ref;
+  first_run = true;
+}
+
+void wall_follower_init(float new_ref_distance_from_wall, int init_state)
+{
+  ref_distance_from_wall = new_ref_distance_from_wall;
   first_run = true;
   state = init_state;
-
 }
 
 // Static helper functions

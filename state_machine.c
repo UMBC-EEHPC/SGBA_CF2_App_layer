@@ -43,9 +43,10 @@ bool sees_person = false;
 
 
 float height;
+extern float max_speed;
 
 static bool taken_off = false;
-static float nominal_height = 0.3;
+static float nominal_height = 0.5;
 
 // Switch to multiple methods, that increases in complexity 
 //1= wall_following: Go forward and follow walls with the multiranger 
@@ -407,7 +408,7 @@ void appMain(void *param)
 
 
 #if METHOD==1 // wall following
-          wall_follower_init(0.4, 0.5, 1);
+          wall_follower_init1(0.4);
 #endif
 #if METHOD==2 // wallfollowing with avoid
           if (my_id%2==1)
@@ -506,13 +507,14 @@ void p2pcallbackHandler(P2PPacket *p)
 }
 
 PARAM_GROUP_START(statemach)
+PARAM_ADD(PARAM_UINT8, state, &state)
+PARAM_ADD(PARAM_FLOAT, max_speed, &max_speed)
 PARAM_ADD(PARAM_UINT8, keep_flying, &keep_flying)
 PARAM_ADD(PARAM_UINT8, sees_person, &sees_person)
 PARAM_ADD(PARAM_UINT8 | PARAM_RONLY, corinit, &correctly_initialized)
 PARAM_GROUP_STOP(statemach)
 
 LOG_GROUP_START(statemach)
-LOG_ADD(LOG_UINT8, state, &state)
 LOG_ADD(LOG_UINT8, rssi_inter, &rssi_beacon)
 LOG_ADD(LOG_UINT8, rssi_beacon, &rssi_beacon_filtered)
 LOG_GROUP_STOP(statemach)

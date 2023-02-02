@@ -16,8 +16,8 @@ float state_start_time;
 //static variables only used for initialization
 static bool first_run = true;
 static float ref_distance_from_wall = 0.5;
-static float max_speed = 0.5;
 static float local_direction = 1;
+extern float max_speed;
 
 
 static int transition(int new_state)
@@ -70,7 +70,7 @@ int wall_follower_and_avoid_controller(float *vel_x, float *vel_y, float *vel_w,
     if (state == 1) {     //FORWARD
         // if front range is close, start wallfollowing
         if (front_range < ref_distance_from_wall + 0.2f) {
-            wall_follower_init(ref_distance_from_wall, 0.5, 3);
+            wall_follower_init(ref_distance_from_wall, 3);
             state = transition(2); //wall_following
         }
     } else if (state == 2) {      //WALL_FOLLOWING
